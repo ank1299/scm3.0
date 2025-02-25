@@ -3,6 +3,9 @@ package com.scm.controllers;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import com.scm.forms.UserForm;
 
 @Controller
 public class PageController {
@@ -49,8 +52,27 @@ public class PageController {
 
     //register page
     @RequestMapping("/register")
-    public String registerPage(){
+    public String registerPage(Model model){
+
+        UserForm userForm = new UserForm();
+        userForm.setName("Ankush");
+        model.addAttribute("user", userForm);
+        //default data
+
         System.out.println("register page loading");
         return  "register";
+    }
+
+    //processing register
+    @RequestMapping(value = "/do-register",method = RequestMethod.POST)
+    public String processRegister(){
+        System.out.println("processRegister Method");
+        //fetch the form data
+        //UserForm
+        //validate form data
+        //save to db
+        //message = "Registration succesfull"
+        //redirect to login page
+        return "redirect:/register";
     }
 }

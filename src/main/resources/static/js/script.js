@@ -11,13 +11,12 @@ document.addEventListener("DOMContentLoaded",()=>{
 function changeTheme(){
     //set to web page
     changePageTheme(currentTheme,currentTheme);
-
     //set the listener to chnage theme button
     const changeThemeButton=document.querySelector('#theme_change_button');
    
     changeThemeButton.addEventListener("click",(event) => {
         console.log("Change theme button clicked");
-        oldTheme = currentTheme;
+        let oldTheme = currentTheme;
         if(currentTheme == "dark"){
             currentTheme = "light";
         }else{
@@ -36,6 +35,7 @@ function setTheme(theme){
 //get theme from localstorage
 function getTheme(){
     let theme = localStorage.getItem("theme");
+     console.log(theme + "curren theme");
     if (theme) return theme;
     else return "light";
 }

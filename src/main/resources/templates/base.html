@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="light" lang="en" th:fragment="parent(content,title,script)"
+<html  lang="en" th:fragment="parent(content,title,script)"
     xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -21,9 +21,9 @@
     <!-- flow bite content -->
 
     <!-- common footer -->
-     <footer class="p-4">
+     <!-- <footer class="p-4">
         Footer: Learn code with Durgesh
-     </footer>
+     </footer> -->
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
     <script data-th-src="@{'/js/script.js'}"></script>
     <th:block data-th-replace="${script}"></th:block>
