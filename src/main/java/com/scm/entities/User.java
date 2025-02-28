@@ -6,6 +6,8 @@ import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -38,15 +40,21 @@ public class User {
     private String profilePic;
     private String phoneNumber;
     //information
+    @Builder.Default
     private Boolean enabled = false;
+    @Builder.Default
     private Boolean emailVerified = false;
+    @Builder.Default
     private Boolean phoneVerified = false;
     //SELF , GOOGLE, FACEBOOK, TWITTER,LINKEDIN,GITHUB
+    @Enumerated(value = EnumType.STRING)
+    @Builder.Default
     private Providers provider=Providers.SELF;
     private String providerUserId;
 
     //add more fields
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY,orphanRemoval = true)
+    @Builder.Default
     private List<Contact> contacts = new ArrayList<Contact>();
 
     

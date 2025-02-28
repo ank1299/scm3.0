@@ -1,14 +1,29 @@
 package com.scm.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.scm.entities.User;
 import com.scm.forms.UserForm;
+import com.scm.helpers.Message;
+import com.scm.helpers.MessageType;
+import com.scm.services.UserService;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PageController {
+
+    @Autowired
+    private UserService userService;
+
+    @Value("${user.profilePic.path}")
+    private String profilePic;
 
     @RequestMapping("/home")
     public String home(Model model){
@@ -55,9 +70,8 @@ public class PageController {
     public String registerPage(Model model){
 
         UserForm userForm = new UserForm();
-        userForm.setName("Ankush");
+        // userForm.setName("Ankush");
         model.addAttribute("user", userForm);
-        //default data
 
         System.out.println("register page loading");
         return  "register";
@@ -65,13 +79,29 @@ public class PageController {
 
     //processing register
     @RequestMapping(value = "/do-register",method = RequestMethod.POST)
-    public String processRegister(){
+    public String processRegister(@ModelAttribute UserForm userForm, HttpSession session){
         System.out.println("processRegister Method");
         //fetch the form data
         //UserForm
+        System.out.println(userForm);
         //validate form data
         //save to db
+        User user = User.builder()
+        .name(userForm.getName())
+        .email(userForm.getEmail())
+        .password(userForm.getPassword())
+        .about(userForm.getAbout())
+        .phoneNumber(userForm.getPhoneNumber())
+        .profilePic(profilePic)
+        .build();
+        
+        User savedUser = userService.saveUser(user);
+        System.out.println("User saved");
         //message = "Registration succesfull"
+        Message message = Message.builder().content("Registration Successful").type(MessageType.green).build();
+        session.setAttribute("message",message);
+        // session.setAttribute("message","Registration successfull");
+
         //redirect to login page
         return "redirect:/register";
     }
