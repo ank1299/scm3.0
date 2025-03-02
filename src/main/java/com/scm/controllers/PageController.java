@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,7 @@ import com.scm.helpers.MessageType;
 import com.scm.services.UserService;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 @Controller
 public class PageController {
@@ -79,12 +81,19 @@ public class PageController {
 
     //processing register
     @RequestMapping(value = "/do-register",method = RequestMethod.POST)
-    public String processRegister(@ModelAttribute UserForm userForm, HttpSession session){
+    public String processRegister(@Valid @ModelAttribute("user") UserForm userForm, BindingResult rbindingResult, HttpSession session){
+    // public String processRegister(@Valid @ModelAttribute UserForm userForm, BindingResult rbindingResult, HttpSession session){
         System.out.println("processRegister Method");
         //fetch the form data
         //UserForm
         System.out.println(userForm);
         //validate form data
+
+        if(rbindingResult.hasErrors()){
+            System.out.println("Error found");
+            return "register";
+        }
+
         //save to db
         User user = User.builder()
         .name(userForm.getName())
